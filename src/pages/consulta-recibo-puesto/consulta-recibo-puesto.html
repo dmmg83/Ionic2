@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+      <ion-title>Consulta de recibos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+
+      <ion-item>
+          <ion-label color="gray" fixed>Plaza </ion-label>
+          <ion-select [(ngModel)]="plazaSeleccionada" name='cmbPlaza' interface="action-sheet" placeholder="Seleccionar" cancelText="Cancelar">
+              <ion-option *ngFor="let p of plazas" [value]="p">{{p.nombreplaza}} </ion-option>
+          </ion-select>
+      </ion-item>
+      <ion-item>
+          <ion-label color="gray" fixed>Sector </ion-label>
+          <ion-select [(ngModel)]="sectorSeleccionado" name='cmbSector' interface="action-sheet" placeholder="Seleccionar" cancelText="Cancelar">
+              <ion-option *ngFor="let s of sectores" [value]="s">{{s.nombresector}} </ion-option>
+          </ion-select>
+      </ion-item>
+      <ion-searchbar type="tel" [(ngModel)]="numPuesto" placeholder="Buscar por No. de puesto"></ion-searchbar>
+      <ion-searchbar type="tel" [(ngModel)]="ccBeneficiario" placeholder="Buscar por C.C. beneficiario"></ion-searchbar>
+      <button ion-button icon-right full (click)="buscar()"> Buscar
+    <ion-icon name="search"></ion-icon>
+  </button>
+  </ion-card>
+  <ion-list>
+      <ion-card *ngFor="let item of recibos">
+
+          <ion-item-divider color={{item.color}}>
+              <h2 class="blanco">
+                  No. Recibo: {{item.numerorecibo}} 
+                  <!-- <span class="naranja" style="float: right;" *ngIf="item.estado=='ANULADO'"><ion-icon name="warning"></ion-icon> {{item.estado}}</span> -->
+              </h2>
+              <p class="fecha">{{item.creacionrecibo}}</p>
+          </ion-item-divider>
+
+          <ion-card-content>
+              <table>
+                  <tr>
+                      <td>Beneficiario </td>
+                      <td>{{item.nombrebeneficiario}}</td>
+                  </tr>
+                  <tr>
+                      <td>Puesto </td>
+                      <td>{{item.numeropuesto}}</td>
+                  </tr>                    
+                  <tr>
+                          <td>Valor pagado</td>
+                          <td>{{item.valorpagado}}</td>
+                      </tr>
+              </table>
+          </ion-card-content>
+
+          <ion-row>
+              <ion-col>
+                  <button ion-button icon-start clear small (click)="imprimir(item.completo)">
+          <ion-icon name="print"></ion-icon>
+          <div>Imprimir</div>
+        </button>
+              </ion-col>
+              <ion-col>
+                  <button ion-button icon-start clear small (click)="anular(item)">
+          <ion-icon name="close"></ion-icon>
+          <div>Anular</div>
+        </button>
+              </ion-col>
+              <ion-col align-self-center text-center>
+                  <ion-note>
+                      {{item.sincronizado}}
+                  </ion-note>
+              </ion-col>
+          </ion-row>
+      </ion-card>
+  </ion-list>
+</ion-content>
